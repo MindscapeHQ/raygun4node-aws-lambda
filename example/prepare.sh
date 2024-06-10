@@ -3,17 +3,9 @@
 # Save the current directory
 original_dir=$(pwd)
 
-# Build the Rauygun4Node package
-echo "Building raygun package..."
-cd ../..
-npm install > /dev/null
-cd "$original_dir" || exit
-echo "...done!"
-echo
-
 # Build the AWS Lambda package
 echo "Building @raygun.io/aws-lambda package..."
-cd ../../aws-lambda || exit
+cd .. || exit
 npm install > /dev/null
 cd "$original_dir" || exit
 echo "...done!"

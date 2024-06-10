@@ -21,7 +21,7 @@ updates:
     ignore:
       # Package in example is accessed by path, 
       # do not update in package.json.
-      - dependency-name: "raygun4node"
+      - dependency-name: "@raygun.io/aws-lambda"
 
 # Github Actions dependencies updates config
   - package-ecosystem: "github-actions"

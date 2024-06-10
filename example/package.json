@@ -1,0 +1,9 @@
+{
+  "name": "aws-example",
+  "version": "1.0.0",
+  "private": "true",
+  "dependencies": {
+    "raygun": "file:../..",
+    "@raygun.io/aws-lambda": "file:../../aws-lambda"
+  }
+}

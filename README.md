@@ -1,6 +1,6 @@
 # Raygun AWS Lambda + Node
 
-[![GitHub CI](https://github.com/MindscapeHQ/raygun4node/actions/workflows/aws-lambda.yml/badge.svg)](https://github.com/MindscapeHQ/raygun4node/actions)
+[![GitHub CI](https://github.com/MindscapeHQ/raygun4node-aws-lambda/actions/workflows/node.js.yml/badge.svg)](https://github.com/MindscapeHQ/raygun4node/actions)
 
 Raygun.com package for AWS Lambda + Node, written in TypeScript.
 

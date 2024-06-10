@@ -1,5 +1,5 @@
 const test = require("tap").test;
-const { makeClientWithMockServer } = require("../../test/utils");
+const { makeClientWithMockServer } = require("./utils");
 const { awsHandler } = require("../lib/raygun.aws");
 
 test("capture AWS lambda errors", async function (t) {

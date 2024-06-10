@@ -86,7 +86,7 @@ export function awsHandler<TEvent, TResult>(
     // Scope breadcrumbs to this handler event
     // TODO: Uncomment when raygun4node 1.1.0 is released
     // return runWithBreadcrumbsAsync(() => {
-      return runHandler(awsHandlerConfig, event, context, asyncHandler);
+    return runHandler(awsHandlerConfig, event, context, asyncHandler);
     // });
   };
 }

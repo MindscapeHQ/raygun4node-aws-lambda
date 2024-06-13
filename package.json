@@ -34,7 +34,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MindscapeHQ/raygun4node.git"
+    "url": "git+https://github.com/MindscapeHQ/raygun4node-aws-lambda.git"
   },
   "keywords": [
     "aws",
@@ -47,7 +47,7 @@
   "author": "Raygun",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MindscapeHQ/raygun4node/issues"
+    "url": "https://github.com/MindscapeHQ/raygun4node-aws-lambda/issues"
   },
-  "homepage": "https://github.com/MindscapeHQ/raygun4node#readme"
+  "homepage": "https://github.com/MindscapeHQ/raygun4node-aws-lambda"
 }

@@ -72,7 +72,3 @@ xyz
 ```
 
 The sent error should appear on your Raygun Crash Reporting console as well.
-
-## Interesting files to look
-
-- `index.js` contains the AWS Lambda function code.

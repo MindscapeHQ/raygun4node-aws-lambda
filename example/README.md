@@ -2,12 +2,15 @@
 
 This is a sample AWS Lambda function to show how to use Raygun4Node and AWS Lambda together.
 
-This example uses the packages `raygun` from npm, and `@raygun/aws-lambda` from local path:
+This example uses `@raygun/aws-lambda` from local path:
 
+```json
+"dependencies": {
+  "@raygun.io/aws-lambda": "file:../"
+}
 ```
-"raygun": "^1.0.0",
-"@raygun.io/aws-lambda": "file:../"
-```
+
+Installing the `raygun` dependency is not necessary, as `@raygun.io/aws-lambda` already depends on `raygun` package.
 
 ## Prepare package
 

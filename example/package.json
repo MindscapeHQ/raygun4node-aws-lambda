@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": "true",
   "dependencies": {
-    "raygun": "^1.0.0",
     "@raygun.io/aws-lambda": "file:../"
   }
 }

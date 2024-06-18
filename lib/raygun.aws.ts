@@ -1,8 +1,6 @@
 import { Client } from "raygun";
 import { Context, Handler } from "aws-lambda";
-
-// TODO: Uncomment when raygun4node 1.1.0 is released
-// import { runWithBreadcrumbsAsync } from "raygun/build/raygun.breadcrumbs";
+import { runWithBreadcrumbsAsync } from "raygun/build/raygun.breadcrumbs";
 
 export type AwsHandlerConfig = {
   client: Client;
@@ -60,7 +58,7 @@ async function runHandler<TEvent, TResult>(
 
     if (e instanceof Error) {
       await awsHandlerConfig.client.send(e, sendParams);
-    } else if(typeof e === "string") {
+    } else if (typeof e === "string") {
       // Wrap string exceptions in Error
       await awsHandlerConfig.client.send(Error(e), sendParams);
     } else {
@@ -87,9 +85,8 @@ export function awsHandler<TEvent, TResult>(
 
   return async (event: TEvent, context: Context) => {
     // Scope breadcrumbs to this handler event
-    // TODO: Uncomment when raygun4node 1.1.0 is released
-    // return runWithBreadcrumbsAsync(() => {
-    return runHandler(awsHandlerConfig, event, context, asyncHandler);
-    // });
+    return runWithBreadcrumbsAsync(() => {
+      return runHandler(awsHandlerConfig, event, context, asyncHandler);
+    });
   };
 }

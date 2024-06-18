@@ -57,20 +57,36 @@ RaygunError
 
 Response
 {
-  "errorType": "string",
+  "errorType": "Error",
   "errorMessage": "It's an AWS error!",
-  "trace": []
+  "trace": [
+    "Error: It's an AWS error!",
+    "    at /var/task/index.js:10:11",
+    "    at /var/task/node_modules/@raygun.io/aws-lambda/build/raygun.aws.js:68:42",
+    "    at step (/var/task/node_modules/@raygun.io/aws-lambda/build/raygun.aws.js:33:23)",
+    "    at Object.next (/var/task/node_modules/@raygun.io/aws-lambda/build/raygun.aws.js:14:53)",
+    "    at /var/task/node_modules/@raygun.io/aws-lambda/build/raygun.aws.js:8:71",
+    "    at new Promise (<anonymous>)",
+    "    at __awaiter (/var/task/node_modules/@raygun.io/aws-lambda/build/raygun.aws.js:4:12)",
+    "    at runHandler (/var/task/node_modules/@raygun.io/aws-lambda/build/raygun.aws.js:59:12)",
+    "    at /var/task/node_modules/@raygun.io/aws-lambda/build/raygun.aws.js:123:35",
+    "    at step (/var/task/node_modules/@raygun.io/aws-lambda/build/raygun.aws.js:33:23)"
+  ]
 }
 
 Function Logs
+2024-06-18T08:48:13.081Z raygun [raygun.breadcrumbs.ts] initialized successfully
+2024-06-18T08:48:13.130Z raygun [raygun.ts] Client initialized
 START RequestId: xyz Version: $LATEST
-2024-06-06T08:33:41.023Z raygun [raygun.breadcrumbs.ts] running async function with breadcrumbs
-2024-06-06T08:33:41.062Z raygun [raygun.breadcrumbs.ts] recorded breadcrumb: xyz
-2024-06-06T08:33:41.063Z raygun [raygun.messageBuilder.ts] Added breadcrumbs: 1
-2024-06-06T08:33:41.542Z	xyz ERROR	Invoke Error 	{"errorType":"Error","errorMessage":"AWS Error from callback!","stack":["Error: AWS Error from callback!","  ....
-2024-06-06T08:33:41.542Z raygun [raygun.ts] Successfully sent message (duration=479ms)
+2024-06-18T08:48:13.135Z raygun [raygun.breadcrumbs.ts] enter with new store
+2024-06-18T08:48:13.151Z raygun [raygun.breadcrumbs.ts] recorded breadcrumb: [object Object]
+2024-06-18T08:48:13.152Z raygun [raygun.breadcrumbs.ts] recorded breadcrumb: [object Object]
+2024-06-18T08:48:13.152Z raygun [raygun.breadcrumbs.ts] recorded breadcrumb: [object Object]
+2024-06-18T08:48:13.210Z raygun [raygun.messageBuilder.ts] Added breadcrumbs: 3
+2024-06-18T08:48:14.024Z	xyz	ERROR	Invoke Error 	{"errorType":"Error","errorMessage":"It's an AWS error!","stack":["Error: It's an AWS error!","    at /var/task/index.js:10:11","    ...
+2024-06-18T08:48:14.024Z raygun [raygun.ts] Successfully sent message (duration=813ms)
 END RequestId: xyz
-REPORT RequestId: xyz	Duration: 627.86 ms	Billed Duration: 628 ms	Memory Size: 128 MB	Max Memory Used: 78 MB
+REPORT RequestId: xyz	Duration: 917.62 ms	Billed Duration: 918 ms	Memory Size: 128 MB	Max Memory Used: 78 MB	Init Duration: 189.88 ms
 
 Request ID
 xyz

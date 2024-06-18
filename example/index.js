@@ -7,7 +7,7 @@ exports.handler = awsHandler({ client }, async function (event, context) {
   client.addBreadcrumb("breadcrumb on event received");
   if (event["error"]) {
     client.addBreadcrumb("event has error data!");
-    throw "It's an AWS error!";
+    throw Error("It's an AWS error!");
   } else {
     return "all good!";
   }

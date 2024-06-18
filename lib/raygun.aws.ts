@@ -58,8 +58,11 @@ async function runHandler<TEvent, TResult>(
       tags,
     };
 
-    if (e instanceof Error || typeof e === "string") {
+    if (e instanceof Error) {
       await awsHandlerConfig.client.send(e, sendParams);
+    } else if(typeof e === "string") {
+      // Wrap string exceptions in Error
+      await awsHandlerConfig.client.send(Error(e), sendParams);
     } else {
       await awsHandlerConfig.client.send(`AWS Handler error: ${e}`, sendParams);
     }

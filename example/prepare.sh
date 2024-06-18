@@ -26,3 +26,4 @@ echo
 echo "Zipping all the contents of the folder..."
 zip -r example.zip . -x "prepare.sh" > /dev/null
 echo "..done!"
+echo

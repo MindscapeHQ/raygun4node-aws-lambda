@@ -18,6 +18,8 @@ Run the `prepare.sh` script.
 
 This script installs the dependencies, builds the example, and packages it in the `example.zip` file.
 
+We recommend running the script from a terminal, to check that everything runs as expected.
+
 ## Deploy
 
 To run this example, you have to create first an AWS Lambda function.

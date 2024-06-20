@@ -1,6 +1,7 @@
 import { Client } from "raygun";
 import { Context, Handler } from "aws-lambda";
 import { runWithBreadcrumbsAsync } from "raygun/build/raygun.breadcrumbs";
+import {CustomData} from "raygun/build/types";
 
 export type AwsHandlerConfig = {
   client: Client;
@@ -37,7 +38,12 @@ async function runHandler<TEvent, TResult>(
   asyncHandler: AsyncHandler<TEvent, TResult>,
 ) {
   awsHandlerConfig.client.addBreadcrumb(
-    `Running AWS Function: ${context.functionName}`,
+    {
+      message: `Running AWS Function: ${context.functionName}`,
+      customData: context,
+      level: "info",
+      category: "AWS Handler",
+    }
   );
 
   try {

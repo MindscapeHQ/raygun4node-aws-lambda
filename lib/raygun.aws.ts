@@ -1,7 +1,6 @@
 import { Client } from "raygun";
 import { Context, Handler } from "aws-lambda";
 import { runWithBreadcrumbsAsync } from "raygun/build/raygun.breadcrumbs";
-import {CustomData} from "raygun/build/types";
 
 export type AwsHandlerConfig = {
   client: Client;

@@ -36,14 +36,12 @@ async function runHandler<TEvent, TResult>(
   context: Context,
   asyncHandler: AsyncHandler<TEvent, TResult>,
 ) {
-  awsHandlerConfig.client.addBreadcrumb(
-    {
-      message: `Running AWS Function: ${context.functionName}`,
-      customData: context,
-      level: "info",
-      category: "AWS Handler",
-    }
-  );
+  awsHandlerConfig.client.addBreadcrumb({
+    message: `Running AWS Function: ${context.functionName}`,
+    customData: context,
+    level: "info",
+    category: "AWS Handler",
+  });
 
   try {
     // Call to original handler and return value

@@ -158,6 +158,7 @@ test("include scoped breadcrumbs", async function (t) {
   t.equal(message.details.breadcrumbs.length, 2);
   // internal breadcrumb
   t.equal(message.details.breadcrumbs[0].message, "Running AWS Function: test");
+  t.equal(message.details.breadcrumbs[0].customData.functionName, "test");
   // custom breadcrumb
   t.equal(message.details.breadcrumbs[1].message, "custom breadcrumb");
 });

@@ -19,6 +19,9 @@ Run the `prepare.sh` script.
 This script installs the dependencies, builds the example, and packages it in the `example.zip` file.
 
 We recommend running the script from a terminal, to check that everything runs as expected.
+You need the `zip` command-line tool installed in order to run this script.
+
+Otherwise, follow the [AWS Lambda documentation](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-package.html) to build and deploy the example.
 
 ## Deploy
 

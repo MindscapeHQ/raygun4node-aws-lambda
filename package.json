@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@types/aws-lambda": "^8.10.138",
-    "raygun": "^1.1.0"
+    "raygun": "^2.0.0"
   },
   "repository": {
     "type": "git",

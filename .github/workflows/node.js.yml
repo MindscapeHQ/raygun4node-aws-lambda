@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
+        node-version: [18.x, 20.x, 22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -29,6 +29,7 @@ jobs:
     - run: npm ci
     - run: npm test
     - run: npm run eslint
+    - run: npm run tseslint
 
   # Checks code formatting, fails if there are changes after applying prettier.
   # Based on this example here:

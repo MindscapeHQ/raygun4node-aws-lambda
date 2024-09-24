@@ -5,8 +5,10 @@
   "main": "build/raygun.aws.js",
   "types": "build/raygun.aws.d.ts",
   "scripts": {
-    "//eslint": "performs static analysis over project files",
-    "eslint": "eslint --fix lib/*.ts test/*.js",
+    "//eslint": "performs static analysis over JS files and examples",
+    "eslint": "eslint --config eslint.config.mjs --fix test/*.js example/*.js",
+    "//tseslint": "performs static analysis over TS files and examples",
+    "tseslint": "eslint --config tseslint.config.mjs --fix lib/*.ts",
     "//prettier": "performs code formatting over project files",
     "prettier": "prettier --write lib/*.ts test/*.js",
     "//prepare": "prepare project for distribution",
@@ -20,13 +22,14 @@
     "@stylistic/eslint-plugin-ts": "^2.2.1",
     "@types/node": "^22.5.1",
     "eslint": "^8.57.0",
+    "eslint-plugin-tsdoc": "^0.3.0",
     "express": "^4.19.2",
     "http-terminator": "^3.2.0",
     "prettier": "^3.3.2",
     "tap": "^21.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.13.1"
+    "typescript-eslint": "^8.5.0"
   },
   "dependencies": {
     "@types/aws-lambda": "^8.10.138",

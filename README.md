@@ -111,7 +111,7 @@ The `awsHandler` also adds automatically the function call context in the "Custo
 
 This payload can be found in the "Custom" tab in the Raygun Crash Reporting error report page.
 
-```
+```js
 context: {
   callbackWaitsForEmptyEventLoop: true,
   functionVersion: "$LATEST",
@@ -133,4 +133,3 @@ context: {
 Copyright (c) 2024 Raygun Limited
 
 Licensed under the MIT license.
-

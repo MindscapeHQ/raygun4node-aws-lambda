@@ -41,7 +41,7 @@ please get in touch with the Raygun team.
 
 ### Fork the repository
 
-Please fork the main repository from https://github.com/MindscapeHQ/raygun4node-aws-lambda
+Please fork the main repository from <https://github.com/MindscapeHQ/raygun4node-aws-lambda>
 into your own GitHub account.
 
 ### Create a new branch
@@ -53,7 +53,7 @@ Do not submit a PR directly from your `main` branch.
 
 ### Open a pull request
 
-Submit a pull request against the main repositories' `main` branch. 
+Submit a pull request against the main repositories' `main` branch.
 
 Fill the PR template and give it a title that follows the [Conventional Commits guidelines](https://www.conventionalcommits.org/en/v1.0.0/).
 
@@ -63,4 +63,3 @@ Wait for a review by the Raygun team.
 The team will leave you feedback and might ask you to do changes in your code.
 
 Once the PR is approved, the team will merge it.
-

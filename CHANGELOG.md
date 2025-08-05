@@ -1,3 +1,5 @@
+# Changelog
+
 ## 0.0.4
 
 - chore(deps-dev): bump eslint from 9.13.0 to 9.17.0 (#78) (2025-01-06)
@@ -51,4 +53,3 @@
   - Support for scoped Breadcrumbs.
 - Created example project.
 - Created documentation.
-

@@ -20,7 +20,7 @@ Set up the Raygun client as described in the [Raygun package](https://www.npmjs.
 Import the `awsHandler` method:
 
 ```js
-const { awsHandler } = require("@raygun/aws-lambda");
+const { awsHandler } = require("@raygun.io/aws-lambda");
 ```
 
 ### Adding Raygun to a AWS Lambda function

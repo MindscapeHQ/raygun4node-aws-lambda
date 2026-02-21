@@ -42,7 +42,7 @@ npm run prettier # Format code
 
 ## Core Dependency — raygun4node
 
-This package is a lightweight wrapper around the `raygun` Node.js client (`../raygun4node` in the workspace).
+This package is a lightweight wrapper around the `raygun` Node.js client (installed from npm as a runtime dependency).
 
 ### Key integration points
 

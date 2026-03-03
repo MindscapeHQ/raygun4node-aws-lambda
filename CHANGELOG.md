@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.6
+
+- chore(deps-dev): bump eslint-plugin-tsdoc from 0.5.0 to 0.5.2 (#162) (2026-03-01)
+- chore(deps-dev): bump @types/node from 25.3.0 to 25.3.3 (#159) (2026-03-01)
+- chore(deps): bump @types/aws-lambda from 8.10.160 to 8.10.161 (#158) (2026-03-01)
+- chore: regenerate lockfile to resolve transitive vulnerabilities (ajv, minimatch) (2026-03-02)
+
 ## 0.0.5
 
 - ci: update Node.js CI matrix to 20, 22, 24 (2026-02-24)

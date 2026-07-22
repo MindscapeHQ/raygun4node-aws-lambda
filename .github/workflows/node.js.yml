@@ -44,4 +44,4 @@ jobs:
           node-version: 24.x
           cache: 'npm'
       - run: npm ci
-      - run: npm exec -- prettier --check "lib/*.ts" "test/*.js" "example/*.js"
+      - run: npm run prettier:check

@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.0.7
+
+- chore(deps): bump marocchino/sticky-pull-request-comment from 2 to 3 (#164) (2026-04-01)
+- chore(deps-dev): bump typescript-eslint from 8.56.1 to 8.58.0 (#165) (2026-04-01)
+- chore(deps): bump raygun from 2.2.4 to 2.2.5 (#166) (2026-04-01)
+- chore(deps-dev): bump @types/node from 25.3.3 to 25.5.0 (#167) (2026-04-01)
+- chore(deps-dev): bump eslint from 9.39.2 to 10.1.0 (#168) (2026-04-01)
+- chore(deps-dev): bump @eslint/js from 9.39.2 to 10.0.1 (#161) (2026-04-01)
+- chore: complete ESLint 10 config cleanup and unify stylistic plugins (#169) (2026-04-04)
+- chore(deps): bump actions/checkout from 6 to 7 (#175) (2026-07-22)
+- chore(ci): make quality checks non-mutating (#176) (2026-07-23)
+- chore(deps): refresh dependency lockfiles (#177) (2026-07-23)
+
 ## 0.0.6
 
 - chore(deps-dev): bump eslint-plugin-tsdoc from 0.5.0 to 0.5.2 (#162) (2026-03-01)

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.8
+
+- Maintenance-only release; no public API or runtime behavior changes.
+- chore(deps): bump actions/setup-node from 6 to 7 (#179) (2026-08-04)
+- chore(deps-dev): bump tap from 21.7.4 to 21.7.5 (#181) (2026-08-04)
+- chore(deps-dev): bump eslint from 10.7.0 to 10.8.0 (#183) (2026-08-04)
+- chore(deps-dev): bump @types/node from 25.9.5 to 26.1.2 (#180) (2026-08-04)
+- chore(deps-dev): remediate transitive audit warnings (#184) (2026-08-04)
+- chore(deps-dev): align TypeScript 6 while preserving ES5 CommonJS output (#185) (2026-08-04)
+
 ## 0.0.7
 
 - chore(deps): bump marocchino/sticky-pull-request-comment from 2 to 3 (#164) (2026-04-01)

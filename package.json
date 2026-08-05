@@ -37,6 +37,11 @@
     "@types/aws-lambda": "^8.10.160",
     "raygun": "^2.2.4"
   },
+  "overrides": {
+    "keyv": "4.5.4",
+    "flat-cache": "4.0.1",
+    "file-entry-cache": "8.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MindscapeHQ/raygun4node-aws-lambda.git"

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.9
+
+- Maintenance-only release; no public API or runtime behavior changes.
+- Raised the Raygun4Node runtime dependency baseline to 2.2.9.
+- Updated vulnerable development dependencies and upgraded `fast-uri` to 3.1.7 (#194, #195).
+- Hardened npm CI with disabled dependency lifecycle scripts, runtime audits, registry signature verification, and known-malicious-version blocking (#197).
+- Added clean installation, audit, and handler smoke checks for the example application (#197).
+- Grouped routine patch and minor Dependabot updates on a monthly schedule with a seven-day cooldown; major and security updates remain separate (#196).
+- Refreshed development tooling, including ESLint, TypeScript ESLint, and Node.js type definitions.
+
 ## 0.0.8
 
 - Maintenance-only release; no public API or runtime behavior changes.

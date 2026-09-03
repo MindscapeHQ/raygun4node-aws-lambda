@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ "main", "develop" ]
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
@@ -26,7 +29,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+    - run: npm ci --ignore-scripts
+    - run: npm run prepare
     - run: npm test
     - run: npm run eslint
     - run: npm run tseslint
@@ -43,5 +47,75 @@ jobs:
         with:
           node-version: 24.x
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --ignore-scripts
       - run: npm run prettier:check
+
+  supply-chain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: 'npm'
+      - name: Reject known malicious package versions
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs')
+          const blocked = new Map([
+            ['keyv', '6.0.0'],
+            ['flat-cache', '6.1.24'],
+            ['file-entry-cache', '11.1.6']
+          ])
+          const lockfiles = ['package-lock.json', 'example/package-lock.json']
+
+          for (const lockfile of lockfiles) {
+            const lock = JSON.parse(fs.readFileSync(lockfile, 'utf8'))
+            for (const [path, metadata] of Object.entries(lock.packages)) {
+              for (const [name, version] of blocked) {
+                if ((path === `node_modules/${name}` || path.endsWith(`/node_modules/${name}`)) && metadata.version === version) {
+                  throw new Error(`${lockfile} contains known malicious package ${name}@${version}`)
+                }
+              }
+            }
+          }
+          NODE
+      - run: npm ci --ignore-scripts
+      - run: npm audit --omit=dev
+      - run: npm audit signatures
+
+  example:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            example/package-lock.json
+      - run: npm ci --ignore-scripts
+      - run: npm run prepare
+      - run: npm ci --ignore-scripts
+        working-directory: example
+      - run: npm audit --omit=dev
+        working-directory: example
+      - run: npm audit signatures
+        working-directory: example
+      - name: Smoke test example handler
+        working-directory: example
+        run: |
+          node <<'NODE'
+          const assert = require('node:assert/strict')
+          const { handler } = require('./index')
+
+          handler({}, {})
+            .then((result) => assert.equal(result, 'all good!'))
+            .catch((error) => {
+              console.error(error)
+              process.exitCode = 1
+            })
+          NODE

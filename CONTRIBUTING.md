@@ -17,6 +17,19 @@ The recommended IDE for working on this project is Visual Studio Code.
 
 To run tests, run `npm run test` or run all tests from VSCode.
 
+To test the actual example's success and error paths against a local mock
+Raygun endpoint, run these commands from the repository root:
+
+```sh
+npm run prepare
+npm --prefix example ci --ignore-scripts
+npm run test:example
+```
+
+The example test uses a test API key and does not contact AWS or Raygun.
+The main test suite also checks overlapping async and callback invocations
+for breadcrumb and context isolation.
+
 ### Code analysis
 
 To check the code, run `npm run eslint` and `npm run tseslint`.

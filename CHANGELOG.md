@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Updated vulnerable transitive development dependencies.
+- Preserved existing full Lambda context capture and added regression tests for identity, client context, application-added fields, and overlapping invocations.
+- Documented context capture boundaries and redaction with the Raygun client's `onBeforeSend` hook.
+
 ## 0.0.9
 
 - Maintenance-only release; no public API or runtime behavior changes.

@@ -17,7 +17,8 @@
     "//prepare": "prepare project for distribution",
     "prepare": "tsc",
     "//test": "runs tests on main project",
-    "test": "tap --disable-coverage test/*_test.js"
+    "test": "tap --disable-coverage test/*_test.js",
+    "test:example": "tap --disable-coverage test/example_integration.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

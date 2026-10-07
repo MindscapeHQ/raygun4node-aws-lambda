@@ -107,7 +107,11 @@ exports.handler = awsHandler({ client }, async function (event, context) {
 
 ### AWS Lambda function context in Custom Data
 
-The `awsHandler` also adds automatically the function call context in the "Custom Data" payload of the error report.
+The `awsHandler` captures an allowlisted snapshot of invocation metadata before
+running your handler. It adds this snapshot to the error report's "Custom Data"
+and the automatic "Running AWS Function" breadcrumb. Only the eight fields below
+are captured; `identity`, `clientContext`, methods, and application-added fields
+are excluded. The original event and context still reach your handler unchanged.
 
 This payload can be found in the "Custom" tab in the Raygun Crash Reporting error report page.
 
@@ -123,6 +127,30 @@ context: {
   awsRequestId: "xyz"
 }
 ```
+
+### Protecting sensitive data
+
+The wrapper does not automatically capture the event. Avoid adding credentials,
+personal data, or entire event/context objects to custom data, breadcrumbs, or
+error messages. Invocation metadata still contains infrastructure identifiers,
+including the function ARN and log names; review whether your application needs them.
+
+The Raygun client's `filters` option applies only to request headers, query
+parameters, and parsed request bodies. It does not redact Lambda context metadata,
+custom data, breadcrumbs, or error messages. Use the client's `onBeforeSend` hook
+to remove or redact these sections before transport. For example, to omit all
+custom data and breadcrumbs:
+
+```js
+client.onBeforeSend((payload) => {
+    delete payload.details.userCustomData;
+    delete payload.details.breadcrumbs;
+    return payload;
+});
+```
+
+See the Raygun client's [sensitive-data guidance](https://github.com/MindscapeHQ/raygun4node#protecting-sensitive-data)
+for request filtering and logging precautions.
 
 ## Release History
 

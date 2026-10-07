@@ -105,17 +105,5 @@ jobs:
         working-directory: example
       - run: npm audit signatures
         working-directory: example
-      - name: Smoke test example handler
-        working-directory: example
-        run: |
-          node <<'NODE'
-          const assert = require('node:assert/strict')
-          const { handler } = require('./index')
-
-          handler({}, {})
-            .then((result) => assert.equal(result, 'all good!'))
-            .catch((error) => {
-              console.error(error)
-              process.exitCode = 1
-            })
-          NODE
+      - name: Test example error reporting against a local endpoint
+        run: npm run test:example

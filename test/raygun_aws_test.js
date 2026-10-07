@@ -162,3 +162,129 @@ test("include scoped breadcrumbs", async function (t) {
   // custom breadcrumb
   t.equal(message.details.breadcrumbs[1].message, "custom breadcrumb");
 });
+
+for (const callbackStyle of [false, true]) {
+  test(`allowlist context metadata (${callbackStyle ? "callback" : "async"})`, async (t) => {
+    const environment = await makeClientWithMockServer();
+    t.teardown(() => environment.stop());
+    const metadata = {
+      callbackWaitsForEmptyEventLoop: false,
+      functionVersion: "42",
+      functionName: "privacy-test",
+      memoryLimitInMB: "256",
+      logGroupName: "/aws/lambda/privacy-test",
+      logStreamName: "test-stream",
+      invokedFunctionArn:
+        "arn:aws:lambda:ap-southeast-2:123456789012:function:privacy-test",
+      awsRequestId: "request-123",
+    };
+    const secret = "private-context-sentinel";
+    const context = {
+      ...metadata,
+      identity: { cognitoIdentityId: secret },
+      clientContext: { custom: { token: secret } },
+      password: secret,
+    };
+    const error = new Error("handler failed");
+    const checkAndMutate = (event, receivedContext) => {
+      t.equal(receivedContext, context, "handler receives original context");
+      t.equal(event.token, secret, "handler receives original event");
+      receivedContext.functionName = secret;
+      receivedContext.extra = secret;
+    };
+    let handler;
+    if (callbackStyle) {
+      handler = (event, receivedContext, callback) => {
+        checkAndMutate(event, receivedContext);
+        callback(error);
+      };
+    } else {
+      handler = async (event, receivedContext) => {
+        checkAndMutate(event, receivedContext);
+        throw error;
+      };
+    }
+    const lambda = awsHandler({ client: environment.client }, handler);
+    const nextRequest = environment.nextRequest();
+    try {
+      await lambda({ token: secret }, context);
+      t.fail("handler error must be rethrown");
+    } catch (caught) {
+      t.equal(caught, error);
+    }
+    const message = await nextRequest;
+    t.same(message.details.userCustomData.context, metadata);
+    t.same(message.details.breadcrumbs[0].customData, metadata);
+    t.equal(
+      message.details.breadcrumbs[0].message,
+      "Running AWS Function: privacy-test",
+    );
+    t.notMatch(JSON.stringify(message), secret);
+  });
+}
+
+for (const callbackStyle of [false, true]) {
+  test(`overlapping invocations stay isolated (${callbackStyle ? "callback" : "async"})`, async (t) => {
+    const environment = await makeClientWithMockServer();
+    t.teardown(() => environment.stop());
+    const { client } = environment;
+    const release = {};
+    const gates = {
+      A: new Promise((resolve) => {
+        release.A = resolve;
+      }),
+      B: new Promise((resolve) => {
+        release.B = resolve;
+      }),
+    };
+    const errors = { A: new Error("failure-A"), B: new Error("failure-B") };
+    const work = async (event) => {
+      client.addBreadcrumb(`start-${event.id}`);
+      await gates[event.id];
+      client.addBreadcrumb(`finish-${event.id}`);
+      throw errors[event.id];
+    };
+    let handler;
+    if (callbackStyle) {
+      handler = (event, context, callback) => {
+        work(event).catch(callback);
+      };
+    } else {
+      handler = work;
+    }
+    const lambda = awsHandler({ client }, handler);
+    const first = lambda(
+      { id: "A" },
+      { functionName: "function-A", awsRequestId: "request-A" },
+    ).catch((error) => error);
+    const second = lambda(
+      { id: "B" },
+      { functionName: "function-B", awsRequestId: "request-B" },
+    ).catch((error) => error);
+
+    release.B();
+    t.equal(await second, errors.B);
+    t.equal(
+      environment.server.entries.length,
+      1,
+      "B completes while A is suspended",
+    );
+    release.A();
+    t.equal(await first, errors.A);
+    t.equal(environment.server.entries.length, 2);
+    for (const [index, id] of ["B", "A"].entries()) {
+      const message = environment.server.entries[index];
+      const context = {
+        functionName: `function-${id}`,
+        awsRequestId: `request-${id}`,
+      };
+      t.equal(message.details.error.message, `failure-${id}`);
+      t.same(message.details.userCustomData.context, context);
+      t.same(message.details.breadcrumbs[0].customData, context);
+      t.same(
+        message.details.breadcrumbs.map((crumb) => crumb.message),
+        [`Running AWS Function: function-${id}`, `start-${id}`, `finish-${id}`],
+      );
+    }
+  });
+}

@@ -164,7 +164,7 @@ test("include scoped breadcrumbs", async function (t) {
 });
 
 for (const callbackStyle of [false, true]) {
-  test(`allowlist context metadata (${callbackStyle ? "callback" : "async"})`, async (t) => {
+  test(`preserve full context payload (${callbackStyle ? "callback" : "async"})`, async (t) => {
     const environment = await makeClientWithMockServer();
     t.teardown(() => environment.stop());
     const metadata = {
@@ -188,9 +188,13 @@ for (const callbackStyle of [false, true]) {
     const error = new Error("handler failed");
     const checkAndMutate = (event, receivedContext) => {
       t.equal(receivedContext, context, "handler receives original context");
-      t.equal(event.token, secret, "handler receives original event");
-      receivedContext.functionName = secret;
-      receivedContext.extra = secret;
+      t.equal(
+        event.token,
+        "event-only-sentinel",
+        "handler receives original event",
+      );
+      receivedContext.functionName = "updated-function";
+      receivedContext.extra = "added-by-handler";
     };
     let handler;
     if (callbackStyle) {
@@ -207,19 +211,27 @@ for (const callbackStyle of [false, true]) {
     const lambda = awsHandler({ client: environment.client }, handler);
     const nextRequest = environment.nextRequest();
     try {
-      await lambda({ token: secret }, context);
+      await lambda({ token: "event-only-sentinel" }, context);
       t.fail("handler error must be rethrown");
     } catch (caught) {
       t.equal(caught, error);
     }
     const message = await nextRequest;
-    t.same(message.details.userCustomData.context, metadata);
-    t.same(message.details.breadcrumbs[0].customData, metadata);
+    const expectedContext = {
+      ...metadata,
+      functionName: "updated-function",
+      identity: { cognitoIdentityId: secret },
+      clientContext: { custom: { token: secret } },
+      password: secret,
+      extra: "added-by-handler",
+    };
+    t.same(message.details.userCustomData.context, expectedContext);
+    t.same(message.details.breadcrumbs[0].customData, expectedContext);
     t.equal(
       message.details.breadcrumbs[0].message,
       "Running AWS Function: privacy-test",
     );
-    t.notMatch(JSON.stringify(message), secret);
+    t.notMatch(JSON.stringify(message), "event-only-sentinel");
   });
 }
 
@@ -255,11 +267,23 @@ for (const callbackStyle of [false, true]) {
     const lambda = awsHandler({ client }, handler);
     const first = lambda(
       { id: "A" },
-      { functionName: "function-A", awsRequestId: "request-A" },
+      {
+        functionName: "function-A",
+        awsRequestId: "request-A",
+        identity: { cognitoIdentityId: "identity-A" },
+        clientContext: { custom: { invocation: "A" } },
+        applicationField: "application-A",
+      },
     ).catch((error) => error);
     const second = lambda(
       { id: "B" },
-      { functionName: "function-B", awsRequestId: "request-B" },
+      {
+        functionName: "function-B",
+        awsRequestId: "request-B",
+        identity: { cognitoIdentityId: "identity-B" },
+        clientContext: { custom: { invocation: "B" } },
+        applicationField: "application-B",
+      },
     ).catch((error) => error);
 
     release.B();
@@ -277,6 +301,9 @@ for (const callbackStyle of [false, true]) {
       const context = {
         functionName: `function-${id}`,
         awsRequestId: `request-${id}`,
+        identity: { cognitoIdentityId: `identity-${id}` },
+        clientContext: { custom: { invocation: id } },
+        applicationField: `application-${id}`,
       };
       t.equal(message.details.error.message, `failure-${id}`);
       t.same(message.details.userCustomData.context, context);

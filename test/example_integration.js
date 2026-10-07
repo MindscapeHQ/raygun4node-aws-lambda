@@ -30,11 +30,13 @@ test("actual Lambda sample reports its error to a local endpoint", async (t) => 
   const nextRequest = environment.nextRequest();
   await t.rejects(
     handler(
-      { error: true },
+      { error: true, token: "event-only-sentinel" },
       {
         functionName: "sample-failure",
         awsRequestId: "sample-request",
-        identity: { cognitoIdentityId: "private-sample-sentinel" },
+        identity: { cognitoIdentityId: "sample-identity" },
+        clientContext: { custom: { client: "sample-client" } },
+        applicationField: "sample-application-field",
       },
     ),
     /It's an AWS error!/,
@@ -46,6 +48,16 @@ test("actual Lambda sample reports its error to a local endpoint", async (t) => 
   t.same(message.details.userCustomData.context, {
     functionName: "sample-failure",
     awsRequestId: "sample-request",
+    identity: { cognitoIdentityId: "sample-identity" },
+    clientContext: { custom: { client: "sample-client" } },
+    applicationField: "sample-application-field",
+  });
+  t.same(message.details.breadcrumbs[0].customData, {
+    functionName: "sample-failure",
+    awsRequestId: "sample-request",
+    identity: { cognitoIdentityId: "sample-identity" },
+    clientContext: { custom: { client: "sample-client" } },
+    applicationField: "sample-application-field",
   });
   t.same(
     message.details.breadcrumbs.map((crumb) => crumb.message),
@@ -55,5 +67,5 @@ test("actual Lambda sample reports its error to a local endpoint", async (t) => 
       "event has error data!",
     ],
   );
-  t.notMatch(JSON.stringify(message), "private-sample-sentinel");
+  t.notMatch(JSON.stringify(message), "event-only-sentinel");
 });

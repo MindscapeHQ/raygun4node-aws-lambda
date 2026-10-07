@@ -3,7 +3,7 @@
 ## Unreleased
 
 - Updated vulnerable transitive development dependencies.
-- Replaced full Lambda context capture with a snapshot of the eight documented invocation metadata fields in custom data and automatic breadcrumbs. Identity, client context, and application-added fields are no longer captured automatically.
+- Preserved existing full Lambda context capture and added regression tests for identity, client context, application-added fields, and overlapping invocations.
 - Documented context capture boundaries and redaction with the Raygun client's `onBeforeSend` hook.
 
 ## 0.0.9

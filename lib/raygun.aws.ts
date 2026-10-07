@@ -36,21 +36,9 @@ async function runHandler<TEvent, TResult>(
   context: Context,
   asyncHandler: AsyncHandler<TEvent, TResult>,
 ) {
-  // Capture only invocation metadata, not identity, clientContext, or added fields.
-  const contextData = {
-    callbackWaitsForEmptyEventLoop: context.callbackWaitsForEmptyEventLoop,
-    functionVersion: context.functionVersion,
-    functionName: context.functionName,
-    memoryLimitInMB: context.memoryLimitInMB,
-    logGroupName: context.logGroupName,
-    logStreamName: context.logStreamName,
-    invokedFunctionArn: context.invokedFunctionArn,
-    awsRequestId: context.awsRequestId,
-  };
-
   awsHandlerConfig.client.addBreadcrumb({
-    message: `Running AWS Function: ${contextData.functionName}`,
-    customData: contextData,
+    message: `Running AWS Function: ${context.functionName}`,
+    customData: context,
     level: "info",
     category: "AWS Handler",
   });
@@ -63,7 +51,7 @@ async function runHandler<TEvent, TResult>(
 
     // Prepare send parameters
     const customData = {
-      context: contextData,
+      context: context,
     };
     const tags = ["AWS Handler"];
     const sendParams = {

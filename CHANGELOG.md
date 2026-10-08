@@ -1,10 +1,13 @@
 # Changelog
 
-## Unreleased
+## 0.0.10
 
+- Raised the Raygun4Node runtime dependency baseline to 2.2.10, which removes report payloads and transport error text from diagnostic logs without changing reports sent to Raygun.
 - Updated vulnerable transitive development dependencies.
 - Preserved existing full Lambda context capture and added regression tests for identity, client context, application-added fields, and overlapping invocations.
 - Documented context capture boundaries and redaction with the Raygun client's `onBeforeSend` hook.
+- Added local error-reporting integration tests for the example handler and ran them in CI.
+- Lambda handler behavior, report payloads, and public APIs are unchanged.
 
 ## 0.0.9
 

@@ -1,6 +1,6 @@
 {
   "name": "@raygun.io/aws-lambda",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Raygun Crash Reporting for AWS Lambda functions",
   "main": "build/raygun.aws.js",
   "types": "build/raygun.aws.d.ts",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@types/aws-lambda": "^8.10.160",
-    "raygun": "^2.2.9"
+    "raygun": "^2.2.10"
   },
   "repository": {
     "type": "git",

@@ -25,9 +25,41 @@ where `x.y.z` is the Major, Minor and Patch release numbers.
 
 Update the `version` in the `package.json` file.
 
-### Run npm install
+### Update and review the lockfile
 
-Run `npm install` to update the version in the `package-lock.json`.
+Update lockfile metadata without installing packages or running lifecycle scripts:
+
+```bash copy Copy Lockfile Update
+npm install --package-lock-only --ignore-scripts
+git diff -- package.json package-lock.json
+```
+
+For a version-only release change, expect only the package version metadata to change.
+Investigate any unexpected dependency version, source URL, integrity hash, or install-script change before continuing.
+
+### Install, build, and verify
+
+Use the committed lockfiles and disable dependency lifecycle scripts, as CI does.
+Run the project build explicitly because `--ignore-scripts` also skips its `prepare` hook.
+The commands stop at the first failure; resolve it before continuing.
+
+```bash copy Copy Release Checks
+npm ci --ignore-scripts &&
+npm run prepare &&
+npm test &&
+npm run eslint &&
+npm run tseslint &&
+npm run prettier:check &&
+npm audit --include=dev &&
+npm audit signatures &&
+npm --prefix example ci --ignore-scripts &&
+npm --prefix example audit --include=dev &&
+npm --prefix example audit signatures &&
+npm run test:example
+```
+
+Confirm the PR's supply-chain check passes before publishing. It also rejects known malicious package versions in both lockfiles.
+Valid registry signatures and provenance do not establish that a package is free of malware.
 
 ### Update CHANGELOG.md
 
@@ -41,11 +73,15 @@ git log --pretty=format:"- %s (%as)"
 
 ### Run publish dry-run
 
-Run a publish dry-run to ensure no errors appear:
+After the explicit build and verification above, run a publish dry-run.
+Confirm the package includes `build/raygun.aws.js` and `build/raygun.aws.d.ts`:
 
+```bash copy Copy Publish Dry Run
+npm publish --dry-run --ignore-scripts
 ```
-npm publish --dry-run
-```
+
+Some npm versions still invoke the project's `prepare` hook during packaging despite `--ignore-scripts`.
+This project's hook runs `tsc`; do not rely on publishing to perform the explicit build and verification above.
 
 ### Commit and open a PR
 
@@ -66,8 +102,10 @@ Run the publish command without `dry-run`.
 You will need npmjs.com credentials to publish, 
 as well as being part of the [Raygun organization](https://www.npmjs.com/~raygunowner).
 
-```
-npm publish
+If the checkout or dependencies changed since verification, repeat the install, build, verification, and dry-run steps first.
+
+```bash copy Copy Publish Command
+npm publish --ignore-scripts
 ```
 
 Now the package is available for customers.
@@ -84,4 +122,3 @@ Go to https://github.com/MindscapeHQ/raygun4node-aws-lambda/releases and create 
 GitHub will create a tag for you, you don't need to create the tag manually.
 
 You can also generate the release notes automatically.
-

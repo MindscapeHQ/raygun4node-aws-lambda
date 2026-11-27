@@ -41,19 +41,20 @@ Investigate any unexpected dependency version, source URL, integrity hash, or in
 
 Use the committed lockfiles and disable dependency lifecycle scripts, as CI does.
 Run the project build explicitly because `--ignore-scripts` also skips its `prepare` hook.
+The commands stop at the first failure; resolve it before continuing.
 
 ```bash copy Copy Release Checks
-npm ci --ignore-scripts
-npm run prepare
-npm test
-npm run eslint
-npm run tseslint
-npm run prettier:check
-npm audit --include=dev
-npm audit signatures
-npm --prefix example ci --ignore-scripts
-npm --prefix example audit --include=dev
-npm --prefix example audit signatures
+npm ci --ignore-scripts &&
+npm run prepare &&
+npm test &&
+npm run eslint &&
+npm run tseslint &&
+npm run prettier:check &&
+npm audit --include=dev &&
+npm audit signatures &&
+npm --prefix example ci --ignore-scripts &&
+npm --prefix example audit --include=dev &&
+npm --prefix example audit signatures &&
 npm run test:example
 ```
 

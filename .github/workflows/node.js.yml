@@ -31,6 +31,13 @@ jobs:
         cache: 'npm'
     - run: npm ci --ignore-scripts
     - run: npm run prepare
+    - name: Verify built package supports CommonJS without require(esm)
+      run: |
+        node --no-experimental-require-module <<'NODE'
+        const assert = require('node:assert/strict');
+        const { awsHandler } = require('.');
+        assert.equal(typeof awsHandler, 'function');
+        NODE
     - run: npm test
     - run: npm run eslint
     - run: npm run tseslint
@@ -82,7 +89,7 @@ jobs:
           }
           NODE
       - run: npm ci --ignore-scripts
-      - run: npm audit --omit=dev
+      - run: npm audit --include=dev
       - run: npm audit signatures
 
   example:

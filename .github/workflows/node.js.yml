@@ -70,10 +70,15 @@ jobs:
         run: |
           node <<'NODE'
           const fs = require('node:fs')
+          // Campaign versions for the six affected package names in our dependency tree.
+          // https://socket.dev/supply-chain-attacks/keyv-and-cacheable-compromise
           const blocked = new Map([
             ['keyv', '6.0.0'],
             ['flat-cache', '6.1.24'],
-            ['file-entry-cache', '11.1.6']
+            ['file-entry-cache', '11.1.6'],
+            ['cacheable', '2.5.1'],
+            ['@cacheable/memory', '2.2.1'],
+            ['@cacheable/utils', '2.5.1']
           ])
           const lockfiles = ['package-lock.json', 'example/package-lock.json']
 
